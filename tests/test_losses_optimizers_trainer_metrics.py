@@ -15,9 +15,9 @@ def test_mse_loss_forward_backward():
     y_true = np.array([[0.0, 1.0], [2.0, 3.0]])
 
     l = loss.forward(y_pred, y_true)
-    assert np.isclose(l, 1.5)
+    assert np.isclose(l, 1.0)
     grad = loss.backward()
-    assert np.allclose(grad, np.array([[1.0, 1.0], [1.0, 1.0]]))
+    assert np.allclose(grad, np.array([[0.5, 0.5], [0.5, 0.5]]))
 
 
 def test_cross_entropy_loss_with_indices_and_one_hot():
