@@ -12,7 +12,7 @@ requirements.txt
 Распределение:
 1) Лиза — структура, интеграция, README, финальная сборка
 2) Игорь— nn/base.py, nn/layers.py, nn/activations.py, nn/sequential.py
-3) Человек 3 — nn/losses.py, nn/optimizers.py, nn/trainer.py, nn/metrics.py
-4) Человек 4 — nn/data.py, examples/*, demo/app.py
+3) Никита — nn/losses.py, nn/optimizers.py, nn/trainer.py, nn/metrics.py
+4) Юля — nn/data.py, examples/*, demo/app.py
 
 Не работаем в main напрямую.
