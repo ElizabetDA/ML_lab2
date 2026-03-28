@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 from nn.sequential import Sequential
@@ -74,14 +75,18 @@ def main(with_graphic=True):
     print("=" * 50)
 
     if with_graphic:
-
         fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
         X_test_orig = X_test
         axes[0].scatter(X_test_orig, y_test, alpha=0.5, label='True values')
         axes[0].scatter(X_test_orig, y_pred, alpha=0.5, label='Predictions', marker='x')
-        axes[0].plot(X_test_orig, 2 * X_test_orig + 3, alpha=0.7, color="black",
-                     label='True dependency (without noise)')
+        axes[0].plot(
+            X_test_orig,
+            2 * X_test_orig + 3,
+            alpha=0.7,
+            color="black",
+            label='True dependency (without noise)'
+        )
         axes[0].set_xlabel('x')
         axes[0].set_ylabel('y')
         axes[0].set_title('Model Predictions')
@@ -99,10 +104,15 @@ def main(with_graphic=True):
 
         fig.suptitle(
             f"Regression Model Analysis: data size - {data_size}, learning rate - {learning_rate}, epochs - {epochs}, batch size - {batch_size}",
-            fontsize=14, fontweight='bold')
+            fontsize=14,
+            fontweight='bold'
+        )
+
+        results_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "results"))
+        os.makedirs(results_dir, exist_ok=True)
 
         plt.tight_layout()
-        plt.savefig('../results/regression_result.png', dpi=150)
+        plt.savefig(os.path.join(results_dir, "regression_result.png"), dpi=150)
         plt.show()
 
 

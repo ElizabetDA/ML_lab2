@@ -1,6 +1,10 @@
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.datasets import load_digits
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
+
 from nn.sequential import Sequential
 from nn.layers import Linear
 from nn.activations import ReLU
@@ -9,14 +13,11 @@ from nn.metrics import Accuracy
 from nn.optimizers import Adam
 from nn.trainer import Trainer
 from nn.data import train_test_split, normalize_features, one_hot_conversion
-from sklearn.metrics import confusion_matrix
-import seaborn as sns
 
 
 random_seed = 42
 epochs = 20
 batch_size = 64
-
 
 
 def main(with_graphic=True):
@@ -52,11 +53,9 @@ def main(with_graphic=True):
     )
 
     logits = model.forward(X_test_norm)
-
     test_loss = loss.forward(logits, y_test)
 
     metric.reset()
-
     metric.update(logits, y_test)
     test_accuracy = metric.compute()
 
@@ -71,15 +70,13 @@ def main(with_graphic=True):
 
     random_accuracy = 0.1
     if test_accuracy > random_accuracy:
-        print(
-            f"\nGood result: accuracy {test_accuracy * 100:.2f}% > {random_accuracy * 100:.0f}% (random guessing)")
+        print(f"\nGood result: accuracy {test_accuracy * 100:.2f}% > {random_accuracy * 100:.0f}% (random guessing)")
     else:
-        print(f"\nAccuracy below random guessing, needs improvement")
+        print("\nAccuracy below random guessing, needs improvement")
 
     print("=" * 50)
 
     if with_graphic:
-
         fig, axes = plt.subplots(1, 3, figsize=(12, 4))
 
         axes[0].plot(history['loss'], label='Train loss', color='blue', linewidth=2)
@@ -91,14 +88,17 @@ def main(with_graphic=True):
 
         if history['metric']:
             axes[1].plot(history['metric'], label='Train accuracy', color='green', linewidth=2)
-            axes[1].axhline(y=random_accuracy, color='red', linestyle='--',
-                            label=f'Random guess ({random_accuracy * 100:.0f}%)')
+            axes[1].axhline(
+                y=random_accuracy,
+                color='red',
+                linestyle='--',
+                label=f'Random guess ({random_accuracy * 100:.0f}%)'
+            )
             axes[1].set_xlabel('Epoch')
             axes[1].set_ylabel('Accuracy')
             axes[1].set_title('Learning Curve (accuracy)')
             axes[1].legend()
             axes[1].grid(True, alpha=0.3)
-
 
         all_logits = model.forward(X_test_norm)
         all_pred_classes = np.argmax(all_logits, axis=1)
@@ -112,11 +112,17 @@ def main(with_graphic=True):
 
         fig.suptitle(
             f"Classification Model Analysis: epochs - {epochs}, batch size - {batch_size}",
-            fontsize=14, fontweight='bold')
+            fontsize=14,
+            fontweight='bold'
+        )
+
+        results_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "results"))
+        os.makedirs(results_dir, exist_ok=True)
 
         plt.tight_layout()
-        plt.savefig('../results/mnist_result.png', dpi=150)
+        plt.savefig(os.path.join(results_dir, "mnist_result.png"), dpi=150)
         plt.show()
+
 
 if __name__ == "__main__":
     main()
