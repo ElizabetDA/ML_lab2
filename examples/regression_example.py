@@ -11,6 +11,11 @@ from nn.data import train_test_split, normalize_features
 
 random_seed = 42
 np.random.seed(random_seed)
+data_size = 300
+learning_rate = 0.01
+epochs = 20
+batch_size = 64
+
 
 def data_generation(n_s):
     X = np.random.uniform(-5, 5, size=(n_s, 1))
@@ -18,9 +23,8 @@ def data_generation(n_s):
     return X, y
 
 
-def main():
-
-    X, y = data_generation(300)
+def main(with_graphic=True):
+    X, y = data_generation(data_size)
 
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=random_seed
@@ -35,7 +39,7 @@ def main():
     ])
 
     loss = MSELoss()
-    optimizer = Adam(lr=0.01)
+    optimizer = Adam(lr=learning_rate)
     metric = MeanSquaredError()
     trainer = Trainer(loss_fn=loss, optimizer=optimizer, metric=metric, verbose=True)
 
@@ -47,7 +51,7 @@ def main():
         model=model,
         X_train=X_train_norm,
         y_train=y_train,
-        epochs=40,
+        epochs=epochs,
         batch_size=32
     )
 
@@ -69,30 +73,37 @@ def main():
     print(f"Test metric (MSE):           {test_metric:.6f}")
     print("=" * 50)
 
-    fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+    if with_graphic:
 
-    X_test_orig = X_test
-    axes[0].scatter(X_test_orig, y_test, alpha=0.5, label='True values')
-    axes[0].scatter(X_test_orig, y_pred, alpha=0.5, label='Predictions', marker='x')
-    axes[0].plot(X_test_orig, 2 * X_test_orig + 3, alpha=0.7, color="black", label='True dependency (without noise)')
-    axes[0].set_xlabel('x')
-    axes[0].set_ylabel('y')
-    axes[0].set_title('Model Predictions')
-    axes[0].legend()
-    axes[0].grid(True, alpha=0.3)
+        fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
-    axes[1].plot(history['loss'], label='Train loss', color='blue')
-    if history['metric']:
-        axes[1].plot(history['metric'], "--", label='Train MSE', color='orange')
-    axes[1].set_xlabel('Epoch')
-    axes[1].set_ylabel('Value')
-    axes[1].set_title('Learning Curves')
-    axes[1].legend()
-    axes[1].grid(True, alpha=0.3)
+        X_test_orig = X_test
+        axes[0].scatter(X_test_orig, y_test, alpha=0.5, label='True values')
+        axes[0].scatter(X_test_orig, y_pred, alpha=0.5, label='Predictions', marker='x')
+        axes[0].plot(X_test_orig, 2 * X_test_orig + 3, alpha=0.7, color="black",
+                     label='True dependency (without noise)')
+        axes[0].set_xlabel('x')
+        axes[0].set_ylabel('y')
+        axes[0].set_title('Model Predictions')
+        axes[0].legend()
+        axes[0].grid(True, alpha=0.3)
 
-    plt.tight_layout()
-    plt.savefig('regression_result.png', dpi=150)
-    plt.show()
+        axes[1].plot(history['loss'], label='Train loss', color='blue')
+        if history['metric']:
+            axes[1].plot(history['metric'], "--", label='Train MSE', color='orange')
+        axes[1].set_xlabel('Epoch')
+        axes[1].set_ylabel('Value')
+        axes[1].set_title('Learning Curves')
+        axes[1].legend()
+        axes[1].grid(True, alpha=0.3)
+
+        fig.suptitle(
+            f"Regression Model Analysis: data size - {data_size}, learning rate - {learning_rate}, epochs - {epochs}, batch size - {batch_size}",
+            fontsize=14, fontweight='bold')
+
+        plt.tight_layout()
+        plt.savefig('../results/regression_result.png', dpi=150)
+        plt.show()
 
 
 if __name__ == "__main__":

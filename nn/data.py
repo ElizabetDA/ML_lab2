@@ -51,3 +51,8 @@ def shuffle_data(X, y):
     indices = np.arange(len(X))
     np.random.shuffle(indices)
     return X[indices], y[indices]
+
+
+def one_hot_conversion(num_classes, y):
+    y_onehot = np.eye(num_classes)[y]
+    return y_onehot
