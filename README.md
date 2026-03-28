@@ -106,7 +106,8 @@ ML_lab2/
 │
 ├── results/
 │   ├── regression_result.png
-│   └── mnist_result.png
+│   ├── mnist_result.png
+│   └── other visual materials ...
 │
 ├── API_SPEC.md
 ├── requirements.txt
