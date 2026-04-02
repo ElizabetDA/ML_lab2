@@ -12,6 +12,7 @@
 | Канева Юлия | Данные, примеры, demo | `nn/data.py`, `examples/*`, `demo/app.py`, графики и визуализация |
 
 ---
+[Видео-отчёт](https://drive.google.com/file/d/1ZoddenQfGMy21EqnFUmkrWyehUpV_43_/view?usp=sharing)
 
 ## Описание проекта
 
